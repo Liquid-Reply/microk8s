@@ -404,7 +404,7 @@ parts:
 
   containerd:
     build-snaps: [go]
-    after: [iptables, runc]
+    after: [iptables, runc, crun]
     build-attributes: [no-patchelf]
     source: build-scripts/
     plugin: dump
@@ -480,6 +480,26 @@ parts:
       - -sbin/xtables-multi
       - -sbin/iptables*
       - -lib/xtables
+
+  crun:
+    plugin: autotools
+    configflags:
+      - --with-wasmedge
+    override-pull: |
+      snapcraftctl pull
+      curl https://raw.githubusercontent.com/WasmEdge/WasmEdge/master/utils/install.sh | bash -s -- -p /usr/local
+    build-packages:
+      - libyajl-dev
+      - libcap-dev
+      - libsystemd-dev
+    source: https://github.com/Liquid-Reply/crun.git
+    override-build: |
+      snapcraftctl build
+      cp crun $SNAPCRAFT_PART_INSTALL/bin/
+    stage-packages:
+      - libyajl2
+    stage:
+      - bin/crun
 
   bash-utils:
     source: snap

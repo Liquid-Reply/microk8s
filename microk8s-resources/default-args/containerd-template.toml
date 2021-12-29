@@ -52,6 +52,12 @@ oom_score = 0
       # runtime_type is the runtime type to use in containerd e.g. io.containerd.runtime.v1.linux
       runtime_type = "${RUNTIME_TYPE}"
 
+    [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.crun]
+      runtime_type = "${RUNTIME_TYPE}"
+      pod_annotations = ["*.wasm.*", "wasm.*", "module.wasm.image/*", "*.module.wasm.image", "module.wasm.image/variant.*"]
+      [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.crun.options]
+        BinaryName = "crun"
+
     [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.nvidia-container-runtime]
       # runtime_type is the runtime type to use in containerd e.g. io.containerd.runtime.v1.linux
       runtime_type = "${RUNTIME_TYPE}"
