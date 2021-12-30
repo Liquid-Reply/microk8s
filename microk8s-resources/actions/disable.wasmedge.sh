@@ -4,12 +4,8 @@ set -e
 
 source $SNAP/actions/common/utils.sh
 
-echo "Disable WasmEdge"
+echo "Switching OCI runtime back to default"
 
-echo "$SNAP_DATA/args/containerd-template.toml"
-
-#TODO: find a way to make ${RUNTIME} configurable
-#sed -i s/crun/runc/g "$SNAP_DATA/args/containerd-template.toml"
-sed -i s/\${RUNTIME}/runc/g "$SNAP_DATA/args/containerd-template.toml"
+cp $SNAP/microk8s-resources/default-args/containerd-template.toml $SNAP_DATA/args/containerd-template.toml
 
 restart_service containerd

@@ -4,12 +4,9 @@ set -e
 
 source $SNAP/actions/common/utils.sh
 
-echo "Enable WasmEdge!"
-
-echo "$SNAP_DATA/args/containerd-template.toml"
+echo "Switching OCI runtime to crun with WasmEdge support"
 
 #TODO: find a way to make ${RUNTIME} configurable
-#sed -i s/runc/crun/g "$SNAP_DATA/args/containerd-template.toml"
-sed -i s/\${RUNTIME}/crun/g "$SNAP_DATA/args/containerd-template.toml"
+sed 's/default_runtime_name = \"\${RUNTIME}\"/default_runtime_name = \"crun\"/g' $SNAP/microk8s-resources/default-args/containerd-template.toml > $SNAP_DATA/args/containerd-template.toml
 
 restart_service containerd
