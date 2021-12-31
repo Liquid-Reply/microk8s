@@ -485,6 +485,7 @@ parts:
     plugin: autotools
     configflags:
       - --with-wasmedge
+      - --enable-embedded-yajl
     override-pull: |
       snapcraftctl pull
       curl https://raw.githubusercontent.com/WasmEdge/WasmEdge/master/utils/install.sh | bash -s -- -p /usr/local
@@ -496,10 +497,10 @@ parts:
     override-build: |
       snapcraftctl build
       cp crun $SNAPCRAFT_PART_INSTALL/bin/
-    stage-packages:
-      - libyajl2
+      cp /usr/local/lib/libwasmedge_c.so $SNAPCRAFT_PART_INSTALL/lib/
     stage:
       - bin/crun
+      - lib/libwasmedge_c.so
 
   bash-utils:
     source: snap
